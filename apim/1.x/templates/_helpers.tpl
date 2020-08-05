@@ -53,3 +53,22 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s-%s" .Release.Name $name .Values.ui.name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
+
+
+{{/*
+Create auth header for api
+*/}}
+{{- define "gravitee.api.authheader" -}}
+{{- $auth := printf "admin:%s" .Values.api.http.services.core.http.authentication.password -}}
+{{- $base64auth := b64enc $auth -}}
+{{- printf "Basic %s" $base64auth -}}
+{{- end -}}
+
+{{/*
+Create auth header for gateway
+*/}}
+{{- define "gravitee.gateway.authheader" -}}
+{{- $auth := printf "admin:%s" .Values.gateway.http.services.core.http.authentication.password -}}
+{{- $base64auth := b64enc $auth -}}
+{{- printf "Basic %s" $base64auth -}}
+{{- end -}}
